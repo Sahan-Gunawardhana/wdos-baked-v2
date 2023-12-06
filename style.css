@@ -1,563 +1,714 @@
-//getting references from the form
-//personal details const
-const theForm = document.getElementById("room-reservations");
-const fnameInput = document.getElementById("f-name");
-const lnameInput = document.getElementById("l-name");
-const emailInput = document.getElementById("email");
-const contactInput = document.getElementById("t-number");
+@import url('https://fonts.googleapis.com/css?family=Philosopher|Nunito|Ubuntu|Fira+Sans|Cinzel');
 
-//room booking const
-const branchInput = document.getElementById("branch-1");
-const adultInput = document.getElementById("adults");
-const kidInput = document.getElementById("kids");
-const arrivalInput = document.getElementById("a-date");
-const depatureInput = document.getElementById("d-date");
-const singleBedRoomInput = document.getElementById("s-room");
-const doubleBedRoomInput = document.getElementById("d-room");
-const tripleBedRoomInput = document.getElementById("t-room");
-const extraBedInput = document.getElementById("ex-bed");
-const promoCodeInput = document.getElementById("promo");
-
-//adventure booking conts
-const advBranchInput = document.getElementById('branch-2');
-const advTypeInput = document.getElementById('adventure');
-const foreignAdultsInput = document.getElementById('f-adults');
-const foreignKidsInput = document.getElementById('f-kids');
-const localAdultsInput = document.getElementById('l-adults');
-const localKidsInput = document.getElementById('l-kids');
-const advDurationInput = document.getElementById('duration');
-const guideInput = document.getElementById('guide');
-
-//output field references
-const nameCell = document.getElementById("name-cell");
-const emailCell = document.getElementById("email-cell");
-const contactCell = document.getElementById("contact-cell");
-const branchCell = document.getElementById("branch-cell-1");
-const adultCell = document.getElementById("adult-cell-1");
-const kidCell = document.getElementById("kid-cell-1");
-const arrivalCell = document.getElementById('arrival-cell');
-const depatureCell = document.getElementById('depature-cell')
-const durationCell = document.getElementById('duration-cell');
-const singleCell = document.getElementById('single-cell')
-const doubleCell = document.getElementById('double-cell');
-const tripleCell = document.getElementById('triple-cell');
-const promoCell = document.getElementById('promo-cell');
-const branchCell_2 = document.getElementById('branch-cell-2');
-const advCell = document.getElementById('adv-cell');
-const participantCell = document.getElementById('participant-cell');
-const avdDurationCell = document.getElementById('adv-duration-cell');
-const guideCell = document.getElementById('guide-cell');
-const extraRequirementsCell = document.getElementById("extra-requirements-cell");
-const extraRequirementRadio = document.getElementsByName("requirement-1");
-const extraRequirementCheckboxes = document.getElementsByName("requirement");
-const totalCell_1 = document.getElementById('total-1');
-const totalCell_2 = document.getElementById('total-2');
-const overallTotalCell = document.getElementById('overall');
-const overalllBooking = document.getElementById('overall-booking');
-
-//buttons
-btnReserve = document.getElementById("reserve");
-btnadvReserve = document.getElementById('reserve-adv');
-btnLoyalty = document.getElementById('loyalty');
-btnFavourite = document.getElementById('add-fav');
-btnReturn = document.getElementById('return');
-
-//prices
-let singleRoomPrice = 25000;
-let doubleRoomPrice = 35000;
-let tripleRoomPrice = 40000;
-let extraBedPrice = 8000;
-let extraMealPrice = 5000;
-let guideForAdult = 1000;
-let guideForKid = 500;
-let fAdultPrice = 10000;
-let fKidPrice = 5000;
-let lAdultPrice = 5000;
-let lKidPrice = 2000;
-
-
-//adding event listeners
-window.addEventListener('load', init);
-
-btnReserve.addEventListener('click', reserveRoom);
-btnadvReserve.addEventListener('click', reserveAdv);
-btnLoyalty.addEventListener('click', displayLoyalty);
-btnFavourite.addEventListener('click',saveToFavorites);
-btnReturn.addEventListener('click', returnToTop);
-
-//dynamic event lsiteners 
-fnameInput.addEventListener('input', currentSum);
-lnameInput.addEventListener('input', currentSum);
-emailInput.addEventListener('input', currentSum);
-contactInput.addEventListener('input', currentSum);
-branchInput.addEventListener('input', currentSum);
-adultInput.addEventListener('input', currentSum);
-extraBedInput.addEventListener('input', currentSum);
-kidInput.addEventListener('input', currentSum);
-singleBedRoomInput.addEventListener('input', currentSum);
-doubleBedRoomInput.addEventListener('input', currentSum);
-tripleBedRoomInput.addEventListener('input', currentSum);
-promoCodeInput.addEventListener('input',currentSum);
-advBranchInput.addEventListener('input', currentSum);
-advTypeInput.addEventListener('change', currentSum);
-arrivalInput.addEventListener('change', currentSum);
-depatureInput.addEventListener('input', currentSum);
-foreignAdultsInput.addEventListener('input', currentSum);
-foreignKidsInput.addEventListener('input', currentSum);
-localAdultsInput.addEventListener('input', currentSum);
-localKidsInput.addEventListener('input', currentSum);
-guideInput.addEventListener('change', currentSum);
-advDurationInput.addEventListener('change',currentSum);
-extraRequirementRadio.forEach(function (radio) {
-  radio.addEventListener("change", updateExtraRequirements);
-});
-extraRequirementCheckboxes.forEach(function (checkbox) {
-  checkbox.addEventListener("change", updateExtraRequirements);
-});
-
-
-
-
-
-//indial function
-function init() {
-    bTotal = 0.00;
-    advTotal = 0.00;
-    oTotal = 0.00;
-    updateTableCell(totalCell_1,'LKR ' + bTotal.toFixed(2));
-    updateTableCell(totalCell_2,'LKR ' + advTotal.toFixed(2));
-    updateTableCell(overallTotalCell,'LKR ' + oTotal.toFixed(2));
+:root{
+    --headfont: "Philosopher";
+    --parafont: "Ubuntu";
+    --parafont2: "Nunito";
+    --backupfont: "Ariel";
+    --maincolor: rgb(255, 255, 255);
+    --backcolor: #ffffff;
+    --compcolor: #27322e;
+    --tablecolor:#27322e5e;
+    --compcolour2: #2d6e565e;
 }
 
-//function that updates cells for the outputs
-function updateTableCell(cell, value) {
-    if (cell) {
-        
-        cell.textContent = value;
+body{
+    background-color: var(--maincolor);
+    margin: 0;
+    padding: 0;
+}
+/*Index page/welcome including the media queries*/
+/*navbar*/
+
+.container {
+	margin-top: 100px;
+    position: relative;
+}
+
+.container img {
+	display: block;
+	width: 100%;
+    height: auto;
+    animation: brightness 15s ease-in-out;
+    animation-fill-mode: backwards;
+    animation-iteration-count: 1;
+    filter: brightness(90%);
+}
+
+@keyframes brightness {
+    50%{
+        filter: brightness(50%) blur(2px) saturate(102%);
+    }
+    100%{
+        filter: brightness(100%) blur(0px) saturate(100%);
     }
 }
 
-//function which appends the content to the extra requirement cell
-function appendToCell(cell, content) {
-    const paragraph = cell.querySelector("p");
-    paragraph.innerHTML += content + '<br>';
+nav {
+	position: fixed;
+	z-index: 10;
+	left: 0;
+	right: 0;
+	top: 0;
+	font-family: var(--headfont), var(--backupfont);
+	padding: 0 5%;
+	height: 100px;
+	background-color: var(--compcolor);
 }
 
-//function that gives extra requiremnts to the cell
-function updateExtraRequirements() {
-
-    extraRequirementsCell.innerHTML = "<p></p>";
-
-
-    extraRequirementRadio.forEach(function (radio) {
-        if (radio.checked) {
-            appendToCell(extraRequirementsCell, radio.value);
-
-        }
-    });
-
-
-    extraRequirementCheckboxes.forEach(function (checkbox) {
-        if (checkbox.checked) {
-            appendToCell(extraRequirementsCell, checkbox.value);
-        }
-    });
+nav .logo {
+	float: left;
+	width: 40%;
+	height: 100%;
+	display: flex;
+	align-items: center;
 }
 
-//validates number to check if there are other types or if its a NaN
-function validateNumber(value){
-    const num = parseFloat(value);
-    return isNaN(num) ? 0 : num;
-}
-
-//day duration calculation
-function dayDifference(){
-
-    let arrival = arrivalInput.value;
-    let depature = depatureInput.value;
-    let arrivalValue = new Date(arrival);
-    let depatureValue = new Date(depature);
-    if (depatureValue < arrivalValue) {
-        alert("Kindly ensure that the departure date falls on or after the arrival date to proceed with the reservation. Thank you!");
-        return;
-    }
-    let dayDifference = (depatureValue.getTime() - arrivalValue.getTime())/(24 * 60 * 60 * 1000);
-    if (isNaN(dayDifference)) {
-        dayDifference = 0;
-    }
-    return dayDifference;
-}
-
-//calculating promo code values 
-function promoCodeValidation(){
-    if(promoCodeInput.value == "Promo123"){
-        promoValidation = "Promo code is valid";
-    } else{
-        promoValidation = "Not a valid code"
-    };
-    return promoValidation;
-}
-
-//displays loyalty to the user
-function displayLoyalty(){
-    calculateLoyalty();
-    if(loyaltyPoints > 0){
-        alert(`You currently have a total of ${loyaltyPoints} loyalty points. We appreciate your continued support!`);
-    } else{
-        alert("At the moment, you haven't accumulated any loyalty points.");
-    }
-}
-
-//calculate loyalty points 
-function calculateLoyalty(){
-    let singleRoom = validateNumber(parseInt(singleBedRoomInput.value));
-    let doubleRoom = validateNumber(parseInt(doubleBedRoomInput.value));
-    let tripleRoom = validateNumber(parseInt(tripleBedRoomInput.value));
-    totalRooms = singleRoom + doubleRoom + tripleRoom;
-
-    if(totalRooms > 3){
-        loyaltyPoints = totalRooms * 20;
-        
-    } else {
-        loyaltyPoints = 0;
-        
-    }
-    return loyaltyPoints;
-}
-
-//function that clears the cells
-function clearRoomCells(){
-    updateTableCell(nameCell,'');
-    updateTableCell(emailCell, '');
-    updateTableCell(contactCell, '');
-    updateTableCell(adultCell, '');
-    updateTableCell(kidCell,'');
-    updateTableCell(arrivalCell, '');
-    updateTableCell(depatureCell, '');
-    updateTableCell(durationCell, '');
-    updateTableCell(singleCell, '');
-    updateTableCell(doubleCell, '');
-    updateTableCell(tripleCell, '');
-    updateTableCell(branchCell, '');
-    updateTableCell(branchCell_2, '');
-    updateTableCell(advCell, '');
-    updateTableCell(extraRequirementsCell,'');
-    updateTableCell(participantCell, '');
-    updateTableCell(avdDurationCell, '');
-    updateTableCell(guideCell, '');
-    updateTableCell(promoCell, '');
-}
-
-//updating the table dynamically 
-function currentSum (){
-
-    let fullName = fnameInput.value + ' ' + lnameInput.value;
-    let email = emailInput.value;
-    let contact = contactInput.value;
-    let branchRoom = branchInput.value;
-    let noOfAdults = adultInput.value;
-    let noOfKids = kidInput.value;
-    let arrival = arrivalInput.value;
-    let depature = depatureInput.value;
-    let stayDuration = dayDifference();
-
-    let singleRoom = singleBedRoomInput.value;
-    let doubleRoom = doubleBedRoomInput.value;
-    let tripleRoom = tripleBedRoomInput.value;
-    let promoValidation = promoCodeValidation();
-
-    let advBranch = advBranchInput.value;
-    let advType = advTypeInput.value;
-    let fAdNo = validateNumber(foreignAdultsInput.value);
-    let fKNo = validateNumber(foreignKidsInput.value);
-    let lAdNo = validateNumber(localAdultsInput.value);
-    let lKNo = validateNumber(localKidsInput.value);
-    let noOfParticiapnts = fAdNo + lAdNo + lKNo + fKNo;
+nav .logo img{
+    width: 120px;
+    margin-left: -7%;
     
-    let bTotal = bookingTotal();
+}
 
-    let advDuration = validateNumber(advDurationInput.value);
-    let fAdultCost = fAdNo * fAdultPrice;
-    let fkidCost = fKNo * fKidPrice;
-    let lAdultCost = lAdNo * lAdultPrice;
-    let lKidCost = lKNo * lKidPrice;
-    let guideCost = 0;
-    let guide = guideInput.value || "No guide required";
-    calculateLoyalty();
-    localStorage.setItem('loyaltyPoints', loyaltyPoints);
+nav .links {
+	float: right;
+	padding: 0;
+	margin: 0;
+	width: 60%;
+	height: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
 
-    if(guide === "Guide required"){
-        guide = 'Guide required'
-        guideCost = ((fAdNo + lAdNo) * guideForAdult) + ((lKNo + fKNo) * guideForKid);
+nav .links li {
+	list-style: none;
+}
+
+nav .links a {
+	display: block;
+	padding: 1em;
+	font-size: 1vw;
+	font-weight: bold;
+	color: var(--backcolor);
+	text-decoration: none;
+}
+
+nav .links a:hover{
+    color: var(--maincolor);
+    border-bottom: 3px solid var(--maincolor);
+    transition: 100ms all ; 
+    cursor: pointer;
+}
+
+.logo a:hover{
+    cursor: pointer;
+}
+
+#navbar-btn {
+	position: absolute;
+	top: -100px;
+}
+
+nav .ham-menu {
+	display: none;
+	position: absolute;
+	right: 5%;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+nav .ham-menu .line {
+	width: 30px;
+	height: 5px;
+	background-color: var(--backcolor);
+	margin: 5px;
+	border-radius: 3px;
+	transition: all .5s ease-in-out;
+}
+
+@media screen and (max-width: 1394px) {
+	nav .logo {
+		float: none;
+		width: auto;
+		justify-content: center;
+	}
+    nav .logo img{
+        margin-left: 0;
+        justify-self: center;
     }
-    else{
-        guide = 'No guide required'
-        guideCost = 0;
+	nav .links {
+		float: none;
+		position: fixed;
+		z-index: 9;
+		left: 0;
+		right: 0;
+		top: 100px;
+		bottom: 100%;
+		width: auto;
+		height: auto;
+		flex-direction: column;
+		justify-content: space-evenly;
+		background-color: rgba(0,0,0,0.8);
+		overflow: hidden;
+		box-sizing: border-box;
+		transition: all .5s ease-in-out;
+	}
+	nav .links a {
+		font-size: 20px;
+	}
+    nav .links a:hover{
+        border: none;
     }
-    advParticipantTotal = ((fAdultCost + fkidCost + lAdultCost + lKidCost) * advDuration) + guideCost;
+	nav :checked ~ .links {
+		bottom: 0;
+	}
+	nav .ham-menu {
+		display: block;
+	}
+	nav :checked ~ .ham-menu .line:nth-child(1) {
+        transition: 500ms all;
+        opacity: 0;
+	}
+	nav :checked ~ .ham-menu .line:nth-child(3) {
+        transition: 500ms all;
+        opacity: 0;
+	}
+}
+
+.links .hadfun a{  
+    border-bottom: 3px solid var(--maincolor);
+    color: var(--maincolor);
+}
+
+/*nav animation to animate the text*/
+.nav-animation{	
+	filter: brightness(150%);
+	z-index: 5;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--maincolor);
+    text-align: center;
+    text-transform: uppercase;
+    background-image: linear-gradient(90deg,#e1cbae 0%,#28352a 45%,#b49f85 65%,#e1cbae 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    animation: navtextanimation 6s linear infinite;
+    display: inline-block; 
+    font-size:clamp(20px, 5vw, 500px);
+    font-weight: 500;
+    font-family: var(--headfont), var(--backupfont);
+    filter: contrast(170%) saturate(102%);
+}
+
+@keyframes navtextanimation {
+  to {
+    background-position: 200% center;
+  }
+}
+
+#details{
+    font-size: 1.1em;
+    line-height: 30pt;
+    font-family: var(--headfont);
+    width: 100%;
+    color: black;
+    height: 5em;
+    text-align: justify;
+}
+
+#booking-details{
+    font-size: 1.1em;
+    line-height: 20pt;
+    font-family: var(--headfont);
+    width: 100%;
+    color: black;
+    height: 5em;
+    text-align: justify;
+}
+
+.form-1{
+    grid-area: form;
+    margin: 2%;
+    border: none;
     
+}
+
+
+.info{
+    grid-area: info;
+    margin: 4%;
+}
+
+
+
+.write{
+    padding: 40px;
+    background: var(--backcolor);
    
-    nameCell.innerText = fullName;
-    emailCell.innerText = email;
-    contactCell.innerText = contact;
-    branchCell.innerText = branchRoom;
-    adultCell.innerText = noOfAdults;
-    kidCell.innerText = noOfKids;
-    arrivalCell.innerText = arrival;
-    depatureCell.innerText = depature;
-    durationCell.innerText = stayDuration;
-    singleCell.innerText = singleRoom;
-    doubleCell.innerText = doubleRoom;
-    tripleCell.innerText = tripleRoom;
-    promoCell.innerText = promoValidation;
-    totalCell_1.innerText = 'LKR ' + bTotal.toFixed(2);
-
-    branchCell_2.innerText = advBranch;
-    advCell.innerText = advType;
-    participantCell.innerText = noOfParticiapnts;
-    avdDurationCell.innerText = advDuration;
-    guideCell.innerText = guide;
-    totalCell_2.innerText = 'LKR ' + advParticipantTotal.toFixed(2);
-
-    oTotal = bTotal + advParticipantTotal;
-
-    overallTotalCell.innerText = 'LKR ' + oTotal.toFixed(2);
+    background-color:#ffffff56 ;
 }
 
-//calculate booking total
-function bookingTotal(){
-
-    let noOfKidsTotal = validateNumber(kidInput.value) * extraMealPrice;
-    let stayDuration = validateNumber(dayDifference())
-    let singleRoom = validateNumber(singleBedRoomInput.value) * singleRoomPrice;
-    let doubleRoom = validateNumber(doubleBedRoomInput.value) * doubleRoomPrice;
-    let tripleRoom = validateNumber(tripleBedRoomInput.value) * tripleRoomPrice;
-    let exBed = validateNumber(extraBedInput.value) * extraBedPrice;
-    let bTotal = 0;
-    bTotal = ((singleRoom + doubleRoom + tripleRoom) * stayDuration) + noOfKidsTotal + exBed;
-    discount = 0;
-    if(promoCodeInput.value == "Promo123"){
-        discount = bTotal * 0.05;
-    }
-    else {
-        discount = 0;
-    }
-    bTotal = bTotal - discount;
-    if (isNaN(bTotal)) {
-        bTotal = 0;
-    }
-    return bTotal;
+.table-2{
+    width: 90%;
+    margin-left: 5%;
+    margin-right:5%;
+}
+.table-2 th{
+    font-size: 1.2em;
+}
+.table-2 td{
+    font-size: 1em;
+}
+.total{
+    background-color:var(--tablecolor);
+    color: rgb(0, 0, 0);
+    font-family: var(--headfont);
+    font-weight: 900;
+}
+.Ototal{
+    background-color: var(--compcolor);
+    color: white;
+    font-family: var(--headfont);
+    font-weight: 800;
 }
 
-//reserve rooms 
-function reserveRoom(event){
-    event.preventDefault();
-    clearRoomCells();
-    let fullName = fnameInput.value + ' ' + lnameInput.value;
-    let email = emailInput.value;
-    let contact = contactInput.value;
-    let branchRoom = branchInput.value;
-    let noOfAdults = adultInput.value;
-    let noOfKids = kidInput.value;
-    let arrival = arrivalInput.value;
-    let depature = depatureInput.value;
-    let stayDuration = dayDifference();
-
-    let singleRoom = singleBedRoomInput.value;
-    let doubleRoom = doubleBedRoomInput.value;
-    let tripleRoom = tripleBedRoomInput.value;
-    let promoValidation = promoCodeValidation();
-
-    let fAdNo = validateNumber(foreignAdultsInput.value);
-    let fKNo = validateNumber(foreignKidsInput.value);
-    let lAdNo = validateNumber(localAdultsInput.value);
-    let lKNo = validateNumber(localKidsInput.value);
+.write h3{
+    color: var(--compcolor);
+    font-weight: 500;
+    font-size: 1.5em;
+    margin-bottom: 10px;
     
-    let bTotal = bookingTotal();
-
-    let advDuration = validateNumber(advDurationInput.value);
-    let fAdultCost = fAdNo * fAdultPrice;
-    let fkidCost = fKNo * fKidPrice;
-    let lAdultCost = lAdNo * lAdultPrice;
-    let lKidCost = lKNo * lKidPrice;
-    let guideCost = 0;
-    let guide = guideInput.value;
-    let totalAmount = bTotal + advTotal;
-    let overallTable = document.getElementById('table-wrapper');
-    const emptyDiv = document.getElementById('empty');
-    const overallTotalElement = document.getElementById('overall-total');
-    const overallBooking = document.getElementById('overall-booking');
-    const returnToTop = document.getElementById('return');
-    if(guide === "Guide required"){
-        guideCost = ((fAdNo + lAdNo) * guideForAdult) + ((lKNo + fKNo) * guideForKid);
-    }
-    else{
-        guideCost = 0;
-    }
-    overallTotal = bTotal + advTotal;
-    
-    if (
-        fullName.trim() === '' ||
-        email.trim() === '' ||
-        contact.trim() === '' ||
-        branchRoom.trim() === '' ||
-        noOfAdults.value > 0 ||
-        arrival.trim() === '' ||
-        depature.trim() === '' ||
-        parseInt(singleRoom) == 0 &&
-        parseInt(doubleRoom) == 0 &&
-        parseInt(tripleRoom) == 0
-    ){
-       alert("Please make sure to fill out all the required fields.");
-       return;
-    } else{
-        overallTable.style.display = 'block';
-        emptyDiv.style.display = 'block';
-        returnToTop.style.display = 'block';
-        advParticipantTotal = ((fAdultCost + fkidCost + lAdultCost + lKidCost) * advDuration) + guideCost;
-        overallBooking.innerHTML = `
-        <span>Name :</span> ${fullName} <br>
-        <span>E-mail :</span> ${email} <br>
-        <span>Contact Number :</span> ${contact} <hr> <br> 
-        <span>Branch :</span> ${branchRoom} <br>
-        <span>No. of Adults :</span> ${noOfAdults} <br>
-        <span>No. of Kids :</span> ${noOfKids} <br>
-        <span>Arrival Date :</span> ${arrival} <br>
-        <span>Depature Date :</span> ${depature} <br>
-        <span>Duration of the stay :</span> ${stayDuration} <br>
-        <span>No. of Rooms :</span> ${parseInt(singleRoom) + parseInt(doubleRoom) + parseInt(tripleRoom)} <br>
-        <span>Promo : </span> ${promoValidation}<br>`;
-
-    overallTotalElement.innerHTML = `<span>Total : </span> LKR ${totalAmount.toFixed(2)}`;
-
-    if (returnToTop) {
-        returnToTop.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end'
-        });
-    }
-    }
-
+    font-family: var(--headfont);
 }
 
-//reserves adventures
-function reserveAdv(event){
-    event.preventDefault();
-    let advBranchValue = advBranchInput.value;
-    let advTypeValue = advTypeInput.value;
-    let foreignAdultsValue = parseInt(foreignAdultsInput.value);
-    let foreignKidsValue = parseInt(foreignKidsInput.value);
-    let localAdultValue = parseInt(localAdultsInput.value);
-    let localKidValue = parseInt(localKidsInput.value);
-    let advDurationValue = advDurationInput.value;
-    let guideValue = guideInput.value;
-    let overallTable = document.getElementById('table-wrapper');
-    const emptyDiv = document.getElementById('empty');
-    const returnToTop = document.getElementById('return')
-    if (
-        advBranchValue.trim() === '' ||
-        advTypeValue.trim() === '' ||
-        foreignAdultsValue == 0 &&
-        foreignKidsValue == 0 &&
-        localAdultValue == 0 &&
-        localKidValue == 0
-    ) {
-        alert("Please ensure that all the required fields are filled out.");
+/* form box*/
+
+.formBox{
+    position: relative;
+    width: 100%;
+}
+
+.formBox .row50{
+    display: flex;
+    gap: 20px;
+}
+
+.inputBox{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.formBox .row100 .inputBox{
+    width: 100%;
+}
+
+.inputBox select{
+    padding:10px;
+    font-size: 1.1em;
+    outline: none;
+    border: none;
+    
+    resize: none;
+    border: none;
+    border-bottom: 0.01pt solid black;
+}
+.inputBox label{
+    color: var(--compcolor);
+    margin-top:10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    border: none;
+    
+}
+
+.inputBox input{
+    padding:10px;
+    font-size: 1.1em;
+    outline: none;
+    resize: none;
+    border: none;
+    border-bottom: 0.01pt solid black;
+}
+
+.inputBox textarea{
+    padding: 10px;
+    font-size: 1.1em;
+    outline: none;
+    resize: vertical;
+    min-height: 220px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.inputBox button[type="submit"]{
+    background-color: var(--compcolor);
+    color: #fff;
+    border: none;
+    font-size: 1.1em;
+    max-width: 120px;
+    font-weight:500;
+    cursor: pointer;
+    padding: 14px 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-family: var(--headfont);
+}
+.inputBox button[type="button"]{
+    background-color: var(--compcolor);
+    color: #fff;
+    border: none;
+    font-size: 1.1em;
+    max-width: 120px;
+    font-weight:500;
+    cursor: pointer;
+    padding: 14px 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-family: var(--headfont);
+}
+
+.inputBox button[type="submit"]:hover{
+    box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+    background-color: rgba(42, 80, 68, 0.384);
+    color: var(--compcolor);
+    transition: 0.6s all;
+    cursor: pointer;
+    font-family: var(--headfont);
+}
+.inputBox button[type="button"]:hover{
+    box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+    background-color: rgba(42, 80, 68, 0.384);
+    color: var(--compcolor);
+    transition: 0.6s all;
+    cursor: pointer;
+    font-family: var(--headfont);
+}
+
+.inputBox ::placeholder{
+    color: #898888;
+    font-family: var(--parafont2);
+}
+
+/* info  box*/
+
+.info{
+    background: #ffffff56;
+    padding: 40px;
+}
+
+.info .infobox{
+    margin-top: 15px;
+}
+
+.info h3{
+    color:var(--compcolor) ;
+    margin-top: 10px;
+    
+    font-size: 1.5em;
+    font-family: var(--headfont);
+}
+
+.info .infoBox section{
+    display: flex;
+    align-items: center;
+    margin-bottom:10px;
+    text-align: justify;
+}
+
+.info .infoBox section label{
+    min-width: 45px;
+    height: 45px;
+    color: #000;
+    display: flex;
+    justify-self:center;
+    align-items: center;
+    font-size: 1em;
+    border-width: 40px;
+    border-radius: 4px;
+    text-align: left;
+    margin-right: 15px;
+}
+
+.info .infoBox section p{
+    color: var(--compcolor);
+    font-size: 1em;
+    align-items: center;
+}
+
+.info .infoBox section a{
+    color: var(--compcolor);
+    text-decoration: none;
+    font-size: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*contact us page media queries*/
+
+@media (max-width:1100px){
+    .cu-container{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: "form"
+        "info"
+        "info";
+    }
+    .formBox .row50{
+        display: flex;
+        gap: 0;
+        flex-direction: column;
+    }
+    .inputBox{
+        width: 100%;
+    }
+    .form-1{
+        padding: 30px;
+    }
+    .info{
+        grid-area: info;
+        margin: 2%;
+        height: 40em;
+    }
+
+    .output{
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        height: 100%;
         
-    } else {
-        clearRoomCells();
-        init();
-        emptyDiv.style.display = 'none';
-        overallTable.style.display = 'none';
-        returnToTop.style.display = 'none';
-        alert(
-            [
-                `Thank you for choosing us! 
-                Branch : ${advBranchValue}
-                Adventure: ${advTypeValue}
-                No. of Participants: ${foreignKidsValue + foreignAdultsValue + localAdultValue + localKidValue}
-                Adventure Durations: ${advDurationValue}
-                Guide Requirement: ${guideValue}`
-            ]
-        );
+    }
+   
+    .output fieldset{
+        outline: none;
+        height: 33%;
+        border:none;
+        flex-direction: row;
+        margin-top: 100px;
+    }
+    .output legend{
+        font-family: var(--headfont);
+        font-size: 1.4em;
+    }
+
+    
+}
+
+@media (max-width: 580px) {
+    .desc{
+        display: none;
     }
     
 }
 
-//saving favourites to the local storage
-function saveToFavorites(event) {
-    event.preventDefault();
-    dayFav = dayDifference();
-    localStorage.clear();
-    loyalty = calculateLoyalty();
-    let fullName = fnameInput.value + ' ' + lnameInput.value;
-    let email = emailInput.value;
-    let contact = contactInput.value;
-    let branchRoom = branchInput.value;
-    let noOfAdults = adultInput.value;
-    let arrival = arrivalInput.value;
-    let depature = depatureInput.value;
-    let singleRoom = singleBedRoomInput.value;
-    let doubleRoom = doubleBedRoomInput.value;
-    let tripleRoom = tripleBedRoomInput.value;
-    // Retrieve existing favorites from local storage or start an empty array
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
-    if(
-        fullName.trim() === '' ||
-        email.trim() === '' ||
-        contact.trim() === '' ||
-        branchRoom.trim() === '' ||
-        noOfAdults.value > 0 ||
-        arrival.trim() === '' ||
-        depature.trim() === '' ||
-        parseInt(singleRoom) == 0 &&
-        parseInt(doubleRoom) == 0 &&
-        parseInt(tripleRoom) == 0
-    ){
-       alert("Please make sure to fill out all the required fields.");
-    }else{    const favouriteRoomData = {
-        bookingType: 'Room Booking',
-        name: `${fnameInput.value} ${lnameInput.value}`,
-        email: emailInput.value,
-        contact: contactInput.value,
-        branch: branchInput.value,
-        adult: adultInput.value,
-        kid: kidInput.value,
-        arrivalDate: arrivalInput.value,
-        depatureDate: depatureInput.value,
-        duration: dayFav,
-        singleRoom: singleBedRoomInput.value,
-        doubleRoom: doubleBedRoomInput.value,
-        tripleRoom: tripleBedRoomInput.value,
-        promoCode: promoCodeInput.value,
-        extraBed: extraBedInput.value,
-        loyaltyPoints:  loyalty,
-    };
-    const favoriteAdventureData = {
-        bookingType: 'Adventure Booking',
-        adventureBranch: advBranchInput.value,
-        adventureType: advTypeInput.value,
-        noOfForeignAdults: foreignAdultsInput.value,
-        noOfForeignKids: foreignKidsInput.value,
-        noOfLocalAdults: localAdultsInput.value,
-        noOfLocalKids: localKidsInput.value,
-        duration: advDurationInput.value,
-        guide: guideInput.value,
+.custom-table {
+    font: 100 0.7rem --headfont;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  tr              { border-bottom: 0.5px solid rgba(0, 0, 0, 0.1); }
+  tr:first-child  { background-color: rgba(0,0,0,0.05); }
+  tr:last-child   { border-bottom: none; }
+  
+  th,td {
+    padding: 0.75rem 1.3rem;
+    text-align: center;
+  }
+  
+  td {
+     color: rgba(0,0,0,0.75); 
+     font-family: var(--parafont2);
+     text-align: left;
+     font-size: 1.25em;
+     font-weight: 600;
     }
+  th{
     
-    favorites.push(favouriteRoomData,favoriteAdventureData);
+    text-align: left;
+    font-size: 1.4em;
+    background-color:var(--compcolor);
+    color: white;
+    font-family: var(--headfont);
+  }
+  th:nth-of-type(2), td:nth-of-type(2) { text-align: left; }
+  
+  .custom-label {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    display: grid;
+    place-items: center;
+  }
+  
 
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    alert("You reservation has been added to favourites");
-    }
+  .custom-input{
+    width: inherit;
+    height: inherit;
+    border: 0.5px solid black;
+    
+  }
+  
+
+  
+  
+  
+  .firstbox { border-width: 1.5px; }
+
+
+.table-1 input{
+    width: 100%;
+}
+
+.table-1 th{
+    text-align: left;
+    font-family: var(--headfont);
+    font-size: 1.5em;
+    font-weight: 900;
+   
+}
+
+
+
+.inputBox img{
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1%;
+    border-radius: 5px;
+}
+
+/*outputs for the room booking part*/
+
+#booking-details,#adventure-details{
+    line-height: 30pt;
+}
+
+.output{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    
+}
+.output fieldset{
+    outline: none;
+    height: 33%;
+    border:none;
+}
+.output legend{
+    font-family: var(--headfont);
+    font-size: 1.4em;
+}
+
+.table-3{
+    visibility: hidden;
+}
+
+.table-3{
+    width: 90%;
+    margin-left: 5%;
+    margin-right:5%;
+}
+
+.table-3 th{
+    border: 2pt solid black;
+}
+
+
+
+
+h2 {
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    padding: 30px 0;
+    margin: 0;
+    background-color: var(--compcolor); /* Add a background color for better visibility */
+}
+
+/* Table Styles */
+
+#table-wrapper {
+    width: 90%;
+    margin: 0 5% 0 5%;
+    box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.254);
+    overflow-x: auto;
+    display: none;
+}
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: var(--compcolour2);
+}
+
+.fl-table th, .fl-table td {
+    text-align: left;
+    padding: 8px;
+    line-height: 30px;
 
 }
 
-function returnToTop(){
-    const fnameInput = document.getElementById('f-name');
-    fnameInput.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end'
-    })
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 1.3em;
+}
+
+
+.fl-table thead th, .fl-table thead th:nth-child(odd) {
+    color: #fff;
+    background: var(--compcolor);
+    font-size: 2em;
+    font-family: var(--parafont2);
+}
+.fl-table th span{
+    font-family: var(--headfont);
+}
+
+.fl-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+
+.fl-table span{
+    font-size: 1.3em;
+    font-family: var(--parafont);
+    display: inline-block;
+    width: 300px; 
+    margin-right: 10px;
+}
+
+#empty{
+    height: 600px;
+    display: none;
+}
+
+.overall-total td{
+    font-family: var(--headfont);
+    background-color: #27322e;
+}
+
+.return{
+    margin: 5%;
+    display: none;
 }
