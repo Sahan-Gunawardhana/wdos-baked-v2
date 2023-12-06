@@ -60,6 +60,7 @@ btnReserve = document.getElementById("reserve");
 btnadvReserve = document.getElementById('reserve-adv');
 btnLoyalty = document.getElementById('loyalty');
 btnFavourite = document.getElementById('add-fav');
+btnReturn = document.getElementById('return');
 
 //prices
 let singleRoomPrice = 25000;
@@ -82,6 +83,7 @@ btnReserve.addEventListener('click', reserveRoom);
 btnadvReserve.addEventListener('click', reserveAdv);
 btnLoyalty.addEventListener('click', displayLoyalty);
 btnFavourite.addEventListener('click',saveToFavorites);
+btnReturn.addEventListener('click', returnToTop);
 
 //dynamic event lsiteners 
 fnameInput.addEventListener('input', currentSum);
@@ -385,6 +387,7 @@ function reserveRoom(event){
     const emptyDiv = document.getElementById('empty');
     const overallTotalElement = document.getElementById('overall-total');
     const overallBooking = document.getElementById('overall-booking');
+    const returnToTop = document.getElementById('return');
     if(guide === "Guide required"){
         guideCost = ((fAdNo + lAdNo) * guideForAdult) + ((lKNo + fKNo) * guideForKid);
     }
@@ -410,6 +413,7 @@ function reserveRoom(event){
     } else{
         overallTable.style.display = 'block';
         emptyDiv.style.display = 'block';
+        returnToTop.style.display = 'block';
         advParticipantTotal = ((fAdultCost + fkidCost + lAdultCost + lKidCost) * advDuration) + guideCost;
         overallBooking.innerHTML = `
         <span>Name :</span> ${fullName} <br>
@@ -426,15 +430,14 @@ function reserveRoom(event){
 
     overallTotalElement.innerHTML = `<span>Total : </span> LKR ${totalAmount.toFixed(2)}`;
 
-    if (overallTotalElement) {
-        overallTotalElement.scrollIntoView({
+    if (returnToTop) {
+        returnToTop.scrollIntoView({
             behavior: 'smooth',
             block: 'end'
         });
     }
     }
 
-    
 }
 
 //reserves adventures
@@ -450,7 +453,7 @@ function reserveAdv(event){
     let guideValue = guideInput.value;
     let overallTable = document.getElementById('table-wrapper');
     const emptyDiv = document.getElementById('empty');
-
+    const returnToTop = document.getElementById('return')
     if (
         advBranchValue.trim() === '' ||
         advTypeValue.trim() === '' ||
@@ -466,6 +469,7 @@ function reserveAdv(event){
         init();
         emptyDiv.style.display = 'none';
         overallTable.style.display = 'none';
+        returnToTop.style.display = 'none';
         alert(
             [
                 `Thank you for choosing us! 
@@ -548,4 +552,12 @@ function saveToFavorites(event) {
     alert("You reservation has been added to favourites");
     }
 
+}
+
+function returnToTop(){
+    const fnameInput = document.getElementById('f-name');
+    fnameInput.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+    })
 }
